@@ -1,60 +1,54 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+
+<div>
+  <h1>{{ titulo }}</h1>
+  <!-- Não podemos usar interpolação nos atributos das tag's HTML.  
+    Podemos usar também seu atalho, substituindo v-bind: por apenas dois pontos-->
+  <ul>
+     <!-- Neste caso o v-for fazer o trabalho do forEach ou for in range, ele pega no data
+     a propriedade e faz a interacao no caso aqui foto pode ser substitudo por qualquer palavar
+     ja o fotos é o nome da variavel no data, pode usar o in ou of como agente iterante-->
+    <li v-for="foto in fotos">
+      <img :src= "foto.url" :alt= "foto.titulo">
+    </li>
+  </ul>
+
+</div>
 </template>
 
 <script>
+// através da função data dos nossos componentes que disponibilizamos dados para seus templates.
+//Todas as propriedades do objeto retornado pela função data são acessíveis no template através
+// de interpolação, ou seja, com o uso de {{ }}.
 export default {
-  name: 'app',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+
+  data() {
+
+    return{
+      titulo:"Alurapic",
+      fotos: []
     }
-  }
+  },
+  // todo componente do Vue possui ganchos em seu clico de vida (Lifecycle Hooks) que permite 
+  // executar um código em determinada fase do seu ciclo, neste caso é o created
+  //Em nosso projeto, foi necessário interagir com o hook created para executar uma requisição 
+  //para nossa API assim que o componente fosse criado, evitando assim que o usuário tivesse que 
+  //clicar em algum botão para buscar a lista de fotos da API.
+  created() {
+    //consumir uma API é através do $http
+    // nesse caso o this assume a variavel recebida do evento, entao, como o $http, usando o 
+    //metodo get vamos até o endereco da API, ENTAO/then(), pegamos a resposta res, convertemos
+    // para arquivo json(), ENTAO/then(), criamos uma funcao chamada fotos usamos o this 
+    //para assumir a variavel do evento que no caso é a resposta da api, e jogamos as fotos para
+    // dentro de uma variavel escolhemos o nome fotos, na mesma linha colocamos a reposta caso
+    // ocorra algum erro err, gerando uma mensagem no console.log do erro
+    this.$http.get('http://localhost:3000/v1/fotos')
+      .then(res => res.json())
+      .then(fotos => this.fotos = fotos, err => console.log(err));
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
