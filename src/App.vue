@@ -1,26 +1,42 @@
 <template>
 
-<div>
-  <h1>{{ titulo }}</h1>
-  <!-- Não podemos usar interpolação nos atributos das tag's HTML.  
-    Podemos usar também seu atalho, substituindo v-bind: por apenas dois pontos-->
-  <ul>
-     <!-- Neste caso o v-for fazer o trabalho do forEach ou for in range, ele pega no data
-     a propriedade e faz a interacao no caso aqui foto pode ser substitudo por qualquer palavar
-     ja o fotos é o nome da variavel no data, pode usar o in ou of como agente iterante-->
-    <li v-for="foto in fotos">
-      <img :src= "foto.url" :alt= "foto.titulo">
-    </li>
-  </ul>
+  <div class="corpo">
+    <h1 class="centralizado">{{ titulo }}</h1>
+    <!-- Não podemos usar interpolação nos atributos das tag's HTML.  
+      Podemos usar também seu atalho, substituindo v-bind: por apenas dois pontos-->
+    <ul class="lista-fotos">
+      <!-- Neste caso o v-for fazer o trabalho do forEach ou for in range, ele pega no data
+      a propriedade e faz a interacao no caso aqui foto pode ser substitudo por qualquer palavar
+      ja o fotos é o nome da variavel no data, pode usar o in ou of como agente iterante-->
+      
+      <li  class="lista-fotos-item" v-for="foto in fotos">
+        
+        <meu-painel :titulo="foto.titulo">
+          <img class="imagem-responsiva" :src="foto.url" :alt="foto.titulo">
+        </meu-painel>
 
-</div>
+      </li>
+    </ul>
+
+  </div>
 </template>
 
 <script>
+import Painel from './components/shared/painel/Painel.vue';
+//Importar nosso Painel ainda não é suficiente. Precisamos indicar em App.vue como iremos
+ //referenciar o componente em seu template. Podemos escolher qualquer nome, no caso, vamos 
+ //escolher meu-painel. É através da propriedade components que associamos o nome meu-painel 
+ //ao componente
+
 // através da função data dos nossos componentes que disponibilizamos dados para seus templates.
 //Todas as propriedades do objeto retornado pela função data são acessíveis no template através
 // de interpolação, ou seja, com o uso de {{ }}.
 export default {
+
+  components: {
+    // aqui eu posso dar qualquer nome
+    'meu-painel': Painel
+  },
 
   data() {
 
@@ -50,5 +66,22 @@ export default {
 </script>
 
 <style>
+  .corpo {
+    font-family: Helvetica, sans-serif;
+    width: 96%;
+    margin: 0 auto;
+  }
+  .centralizado {
+    text-align: center;
 
+  }
+  .lista-fotos {
+    list-style: none;
+  }
+  .lista-fotos-item {
+    display: inline-block;
+  }
+   .imagem-responsiva {
+    width: 100%;
+  }
 </style>
