@@ -1,25 +1,25 @@
 <template>
   <div class="corpo">
-    <nav>
-      <ul>       
-          <li v-for="route in routes">
-            <!-- Tem a mesma finalidade da tag a, permitindo que o usuário clique no elemento da 
-            diretiva e vá para outra rota. -->
-            <router-link :to="route.path ? route.path : '/'">{{ route.titulo }}</router-link></li>
-
-      </ul>
-    </nav>
+    <meu-menu :rotas="routes"/>
     <!-- Serve para indicar para o template da página principal da aplicação o local no qual os demais
      componentes carregados através de rotas devem ser renderizados. -->
-    <router-view></router-view>
+    <transition name="pagina">
+      <router-view></router-view>
+    </transition>
+    
   </div>
 </template>
 
 <script>
-
-import { routes } from './routes'
+// para fazer o v-vor no template precisamos importar o uso da routes aqui.
+import { routes } from './routes';
+import Menu from './components/shared/menu/Menu.vue';
 
 export default {
+  components: {
+    'meu-menu': Menu,
+  },
+
   data() {
     return {
       routes
@@ -34,5 +34,11 @@ export default {
     font-family: Helvetica, sans-serif;
     width: 96%;
     margin: 0 auto;
+  }
+  .pagina-enter, .pagina-leave-active {
+    opacity: 0;
+  }
+  .pagina-enter-active, .pagina-leave-active {
+    transition: opacity 0.4s;
   }
 </style>
