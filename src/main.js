@@ -5,6 +5,7 @@ import VueResource from 'vue-resource';
 // não pasta importarmos o módulo VueResource, veja, apenas importamos o módulo dentro de 
 //App.vue, mas precisamos ainda registrá-lo. Fazemos isso através do global view object que
 // já temos importado
+
 //O módulo VueResource disponibiliza artefatos especializados na realização de requisições 
 //assíncronas ao mesmo tempo em que se integra com o ecossistema do Vue.
 

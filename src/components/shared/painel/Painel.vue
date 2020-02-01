@@ -1,12 +1,22 @@
 
 <template>
     <div class="painel">
-        <h2 class="painel-titulo">{{ titulo }}</h2>
+        <!-- o v-on: pode se subistituido por @ -->
+        <h2 class="painel-titulo" v-on:dblclick="visivel = !visivel">{{ titulo }}</h2>
         <!-- precisamos indicar no template de Painel a área que queremos considerar como um 
         slot, ou seja, aquela área que recebera tudo aquilo que tiver dentro da tag <meu-painel>
             -->
-        <slot class="painel-conteudo">
-        </slot>
+        <!-- Usamos transition para gerar um marcador de quando queremos criar algum efeito
+        nesse as fotos ficam visiveis/invisevis, entao adicionamos o marcador transition para
+        gerar um evento e poder colocar o efeito, precisamos colocar um name="",entao isso
+        gera um numero de classes para usar no css, por exmplo, .painel-fade-leave-active, 
+        .painel-fade-enter-active, .painel-fade-enter, existem mais deve se observar na doc
+        entao podemos fazer efeitos de css nesse evento em especifico. -->
+        <transition name="painel-fade">
+            <div class="painel-conteudo" v-show="visivel">
+                <slot ></slot>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -16,6 +26,12 @@
 //pelo componente.
 export default {
     props: ['titulo'],
+
+    data() {
+        return {
+            visivel: true,
+        }
+    }
 }
 </script>
 
@@ -44,4 +60,10 @@ export default {
   * {
       box-shadow: 5px 5px 10px gray;
   }
+   .painel-fade-enter, .painel-fade-leave-active {
+       opacity: 0;
+   }
+    .painel-fade-enter-active, .painel-fade-leave-active {
+        transition: opacity 1s;
+    }
 </style>
