@@ -21,6 +21,15 @@
         
         <meu-painel :titulo="foto.titulo">
           <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>
+          <!-- Aqui por ser um componente criado o meu botao tem caract especiais
+          nesse caso o evento clique precisa ser click.native para chamar o componente
+          nativo por tras da tag meu-botao que é o button -->
+          <meu-botao tipo="button"
+           rotulo="REMOVER" 
+           @botaoAtivado="remove(foto)" 
+           :confirmacao="false"
+           estilo="perigo"
+          />
         </meu-painel>
 
       </li>
@@ -32,6 +41,7 @@
 <script>
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
 import Painel from '../shared/painel/Painel.vue';
+import Botao from '../shared/botao/Botao.vue';
 //Importar nosso Painel ainda não é suficiente. Precisamos indicar em App.vue como iremos
  //referenciar o componente em seu template. Podemos escolher qualquer nome, no caso, vamos 
  //escolher meu-painel. É através da propriedade components que associamos o nome meu-painel 
@@ -46,6 +56,7 @@ export default {
     // aqui eu posso dar qualquer nome
     'meu-painel': Painel,
     'imagem-responsiva': ImagemResponsiva,
+    'meu-botao': Botao,
   },
 
   data() {
@@ -73,8 +84,12 @@ export default {
       }
     }
   },
-
-
+    methods: {
+    remove(foto) {
+      
+        alert("Remover " + foto.titulo)
+    },
+  },
 
   // todo componente do Vue possui ganchos em seu clico de vida (Lifecycle Hooks) que permite 
   // executar um código em determinada fase do seu ciclo, neste caso é o created
@@ -93,6 +108,8 @@ export default {
       .then(res => res.json())
       .then(fotos => this.fotos = fotos, err => console.log(err));
   },
+
+
 }
 </script>
 
